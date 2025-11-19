@@ -1,14 +1,14 @@
 server:
-  port: 8089
+  port: 8087
 
 spring:
   application:
     name: event-quote-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/eventify?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
-    username: root
-    password: benimaru$2805
+    url: ${DB_URL:jdbc:mysql://localhost:3306/event-quote?createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -26,7 +26,9 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:9090
+        url: ${ADMIN_URL:http://localhost:9090}
+        instance:
+          service-base-url: ${SERVICE_URL:http://localhost:8082}
 
 documentation:
   application:
@@ -43,9 +45,13 @@ authorization:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    hostname: ${EUREKA_HOST:localhost}    
+    non-secure-port-enabled: true
+    secure-port-enabled: true
 
 management:
   endpoints:
