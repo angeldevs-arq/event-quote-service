@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByIdQuery;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class SocialEventsController {
     private final SocialEventQueryService socialEventQueryService;
 
     public SocialEventsController(SocialEventCommandService socialEventCommandService,
-                                  SocialEventQueryService socialEventQueryService) {
+            SocialEventQueryService socialEventQueryService) {
         this.socialEventCommandService = socialEventCommandService;
         this.socialEventQueryService = socialEventQueryService;
     }
@@ -95,9 +96,10 @@ public class SocialEventsController {
     })
     @PutMapping("/{socialEventId}")
     public ResponseEntity<SocialEventResource> updateSocialEvent(@PathVariable Long socialEventId,
-                                                                 @RequestBody UpdateSocialEventResource resource) {
+            @RequestBody UpdateSocialEventResource resource) {
         try {
-            var updateCommand = UpdateSocialEventCommandFromResourceAssembler.toCommandFromResource(resource, socialEventId);
+            var updateCommand = UpdateSocialEventCommandFromResourceAssembler.toCommandFromResource(resource,
+                    socialEventId);
             var socialEvent = socialEventCommandService.handle(updateCommand);
 
             if (socialEvent.isEmpty()) {
@@ -128,6 +130,27 @@ public class SocialEventsController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Retrieves a social event by id.
+     */
+    @Operation(summary = "Get a social event by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Social event retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Social event not found")
+    })
+    @GetMapping("/{socialEventId}")
+    public ResponseEntity<SocialEventResource> getSocialEventById(@PathVariable Long socialEventId) {
+        var query = new GetSocialEventByIdQuery(socialEventId);
+        var socialEvent = socialEventQueryService.handle(query);
+
+        if (socialEvent.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var socialEventResource = SocialEventResourceFromEntityAssembler.toResourceFromEntity(socialEvent.get());
+        return ResponseEntity.ok(socialEventResource);
     }
 
     /**

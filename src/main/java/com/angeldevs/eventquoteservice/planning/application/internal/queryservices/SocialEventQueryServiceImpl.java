@@ -5,6 +5,8 @@ import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetAllSocia
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByStatusQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByTitleQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventsByOrganizerQuery;
+import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByIdQuery;
+import java.util.Optional;
 import com.angeldevs.eventquoteservice.planning.domain.services.SocialEventQueryService;
 import com.angeldevs.eventquoteservice.planning.infrastructure.persistence.jpa.repositories.SocialEventRepository;
 import org.springframework.stereotype.Service;
@@ -41,5 +43,10 @@ public class SocialEventQueryServiceImpl implements SocialEventQueryService {
     @Override
     public List<SocialEvent> handle(GetSocialEventsByOrganizerQuery query) {
         return socialEventRepository.findByCustomerNameCustomerName(query.customerName());
+    }
+
+    @Override
+    public Optional<SocialEvent> handle(GetSocialEventByIdQuery query) {
+        return socialEventRepository.findById(query.socialEventId());
     }
 }

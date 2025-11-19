@@ -1,16 +1,18 @@
 package com.angeldevs.eventquoteservice.planning.domain.services;
+
 import com.angeldevs.eventquoteservice.planning.domain.model.aggregates.SocialEvent;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetAllSocialEventQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByStatusQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByTitleQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventsByOrganizerQuery;
+import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetSocialEventByIdQuery;
+import java.util.Optional;
 
 import java.util.List;
 
 /**
  * Service interface for handling social event queries.
  */
-
 
 public interface SocialEventQueryService {
 
@@ -45,7 +47,12 @@ public interface SocialEventQueryService {
      * @return list of social events organized by the specified customer
      */
     List<SocialEvent> handle(GetSocialEventsByOrganizerQuery query);
+
+    /**
+     * Retrieves a social event by its id.
+     *
+     * @param query the query containing the social event id
+     * @return optional social event
+     */
+    Optional<SocialEvent> handle(GetSocialEventByIdQuery query);
 }
-
-
-
