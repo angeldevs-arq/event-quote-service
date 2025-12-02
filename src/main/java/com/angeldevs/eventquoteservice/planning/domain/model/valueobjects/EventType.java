@@ -8,5 +8,9 @@ public enum EventType{
     CONFERENCE,
     BIRTHDAY,
     WEDDING,
-    GRADUATION
+    GRADUATION,
+    CORPORATE_PARTY,
+    BABY_SHOWER,
+    FIFTEEN_YEARS,
+    OTHER
 }

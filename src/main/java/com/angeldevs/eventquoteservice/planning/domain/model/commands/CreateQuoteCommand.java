@@ -5,10 +5,13 @@ import com.angeldevs.eventquoteservice.planning.domain.model.valueobjects.QuoteS
 
 import java.util.Date;
 
-public record CreateQuoteCommand(String title, EventType eventType, int guestQuantity, String location, double totalPrice, QuoteStatus state, Date eventDate, Long organizerId, Long hostId) {
+public record CreateQuoteCommand(String title, String customerName,EventType eventType, int guestQuantity, String location, double totalPrice, QuoteStatus state, Date eventDate, Long organizerId, Long hostId) {
     public CreateQuoteCommand{
         if(title == null || title.isBlank()){
             throw new IllegalArgumentException("Title cannot be null or blank");
+        }
+        if(customerName == null || customerName.isBlank()){
+            throw new IllegalArgumentException("Customer Name cannot be null or blank");
         }
         if(eventType == null){
             throw new IllegalArgumentException("EventType cannot be null");

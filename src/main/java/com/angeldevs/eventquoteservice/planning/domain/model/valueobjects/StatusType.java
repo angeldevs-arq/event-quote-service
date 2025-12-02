@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 
 public enum StatusType {
     ACTIVE,
+    PENDING,
     TO_CONFIRM,
     CANCELLED,
     COMPLETED

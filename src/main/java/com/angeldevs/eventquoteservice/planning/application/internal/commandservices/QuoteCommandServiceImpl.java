@@ -31,7 +31,7 @@ public class QuoteCommandServiceImpl implements QuoteCommandService {
         var quote = quoteRepository.findByQuoteId(command.quoteId())
                 .orElseThrow(() -> new IllegalArgumentException("Quote not found with id " + command.quoteId()));
         try{
-            var updatedQuote = quote.updateInformation(command.title(),command.eventType(),command.guestQuantity(),command.location(),command.totalPrice(),command.eventDate());
+            var updatedQuote = quote.updateInformation(command.title(), command.customerName(), command.eventType(),command.guestQuantity(),command.location(),command.totalPrice(),command.eventDate());
             quoteRepository.save(updatedQuote);
             return Optional.of(updatedQuote);
         }catch(Exception e){
@@ -70,5 +70,14 @@ public class QuoteCommandServiceImpl implements QuoteCommandService {
             return quote.getQuoteId();
         }).orElseThrow(() -> new IllegalArgumentException("Quote not found with id " + command.quoteId()));
 
+    }
+
+    @Override
+    public String handle(PendingQuoteCommand command) {
+        return quoteRepository.findById(command.quoteId()).map(quote -> {
+            quote.pending();
+            quoteRepository.save(quote);
+            return quote.getQuoteId();
+        }).orElseThrow(() -> new IllegalArgumentException("Quote not found with id " + command.quoteId()));
     }
 }

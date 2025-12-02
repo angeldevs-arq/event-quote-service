@@ -7,6 +7,8 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.util.Date;
+
 /*
 *SocialEvent Aggregate Root
 *
@@ -71,7 +73,7 @@ public class SocialEvent extends AuditableAbstractAggregateRoot<SocialEvent>
         return customerName.customerName();
     }
 
-    public java.time.LocalDate getDate() {
+    public Date getDate() {
         return date.eventDate();
     }
 
@@ -98,7 +100,7 @@ public class SocialEvent extends AuditableAbstractAggregateRoot<SocialEvent>
      * @param newPlace new place
      * @param newDate  new date
      */
-    public void updateDetails(String newTitle, java.time.LocalDate newDate, String newPlace, String newCustomerName ) {
+    public void updateDetails(String newTitle, Date newDate, String newPlace, String newCustomerName ) {
         this.title = new SocialEventTitle(newTitle);
         this.date = new SocialEventDate(newDate);
         this.customerName = new CustomerName(newCustomerName); // Assuming customer name remains unchanged

@@ -1,11 +1,12 @@
 package com.angeldevs.eventquoteservice.planning.interfaces.rest.resources;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public record CreateSocialEventResource(
         String title,
         String place,
-        LocalDate date,
+        Date date,
         String customerName,
         String status
 ) {

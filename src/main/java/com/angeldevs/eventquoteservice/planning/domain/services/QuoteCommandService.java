@@ -13,4 +13,5 @@ public interface QuoteCommandService {
 
     String handle(ConfirmQuoteCommand command);
     String handle(RejectQuoteCommand command);
+    String handle(PendingQuoteCommand command);
 }

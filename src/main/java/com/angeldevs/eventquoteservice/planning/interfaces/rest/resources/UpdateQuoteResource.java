@@ -4,10 +4,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public record UpdateQuoteResource(String title, String eventType, int guestQuantity, String location, double totalPrice, @DateTimeFormat(iso =DateTimeFormat.ISO.DATE_TIME ) Date eventDate) {
+public record UpdateQuoteResource(String title,String customerName, String eventType, int guestQuantity, String location, double totalPrice, @DateTimeFormat(iso =DateTimeFormat.ISO.DATE_TIME ) Date eventDate) {
     public UpdateQuoteResource{
         if(title == null || title.isBlank()){
             throw new IllegalArgumentException("Title cannot be null or blank");
+        }
+        if(customerName == null || customerName.isBlank()){
+            throw new IllegalArgumentException("Customer Name cannot be null or blank");
         }
         if(eventType == null || eventType.isBlank()){
             throw new IllegalArgumentException("EventType cannot be null or blank");

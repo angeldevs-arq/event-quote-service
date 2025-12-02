@@ -1,7 +1,5 @@
 package com.angeldevs.eventquoteservice.planning.domain.model.commands;
 
-import java.time.LocalDate;
-
 /**
  * Command to request the creation of a Social Event.
  *
@@ -13,11 +11,11 @@ import java.time.LocalDate;
  */
 
 public record CreateNewSocialEventCommand(
-    String title,
-    LocalDate date,
-    String customerName,
-    String place,
-    String status
+        String title,
+        java.util.Date date,
+        String customerName,
+        String place,
+        String status
 ) {
 
     public CreateNewSocialEventCommand {

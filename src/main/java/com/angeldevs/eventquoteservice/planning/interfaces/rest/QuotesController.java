@@ -1,13 +1,12 @@
 package com.angeldevs.eventquoteservice.planning.interfaces.rest;
 
-import com.angeldevs.eventquoteservice.planning.domain.model.commands.ConfirmQuoteCommand;
-import com.angeldevs.eventquoteservice.planning.domain.model.commands.DeleteQuoteCommand;
-import com.angeldevs.eventquoteservice.planning.domain.model.commands.RejectQuoteCommand;
+import com.angeldevs.eventquoteservice.planning.domain.model.commands.*;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.ExistsByQuoteIdQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.queries.GetQuoteByQuoteIdQuery;
 import com.angeldevs.eventquoteservice.planning.domain.model.valueobjects.QuoteId;
 import com.angeldevs.eventquoteservice.planning.domain.services.QuoteCommandService;
 import com.angeldevs.eventquoteservice.planning.domain.services.QuoteQueryService;
+import com.angeldevs.eventquoteservice.planning.domain.services.SocialEventCommandService;
 import com.angeldevs.eventquoteservice.planning.interfaces.rest.resources.CreateQuoteResource;
 import com.angeldevs.eventquoteservice.planning.interfaces.rest.resources.QuoteResource;
 import com.angeldevs.eventquoteservice.planning.interfaces.rest.resources.UpdateQuoteResource;
@@ -32,10 +31,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class QuotesController {
     private final QuoteCommandService quoteCommandService;
     private final QuoteQueryService quoteQueryService;
+    private final SocialEventCommandService socialEventCommandService;
 
-    public QuotesController(QuoteCommandService quoteCommandService, QuoteQueryService quoteQueryService) {
+    public QuotesController(QuoteCommandService quoteCommandService, QuoteQueryService quoteQueryService, SocialEventCommandService socialEventCommandService) {
         this.quoteCommandService = quoteCommandService;
         this.quoteQueryService = quoteQueryService;
+        this.socialEventCommandService = socialEventCommandService;
     }
 
     @PostMapping
@@ -113,7 +114,13 @@ public class QuotesController {
         var confirmQuoteCommand = new ConfirmQuoteCommand(new QuoteId(quoteId));
         var confirmedQuote = quoteCommandService.handle(confirmQuoteCommand);
         if(confirmedQuote == null) return ResponseEntity.badRequest().build();
-        String message = "Quote confirmed successfully";
+        //Create a Social Event when a quote is confirmed
+        var getQuoteByQuoteIdQuery = new GetQuoteByQuoteIdQuery(new QuoteId(quoteId));
+        var quoteOptional = quoteQueryService.handle(getQuoteByQuoteIdQuery);
+        var quoteEntity = quoteOptional.get();
+        var createSocialEventCommand = new CreateNewSocialEventCommand(quoteEntity.getTitle(),quoteEntity.getEventDate(),quoteEntity.getCustomerName(), quoteEntity.getLocation(), "PENDING");
+        socialEventCommandService.handle(createSocialEventCommand);
+        String message = "Quote confirmed successfully and Social Event created";
         return ResponseEntity.ok(message);
     }
 
@@ -130,6 +137,21 @@ public class QuotesController {
 
         if(rejectedQuote == null){ return ResponseEntity.badRequest().build();}
         String message = "Quote rejected successfully";
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/{quoteId}/pending")
+    @Operation(summary = "Change the state of a quote to Pending", description = "Pending quote")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Quote state changed to Pending successfully"),
+            @ApiResponse(responseCode = "400",description = "Bad Request")
+    })
+    public ResponseEntity<?> pendingQuote(@PathVariable String quoteId){
+        var pendingQuoteCommand = new PendingQuoteCommand(new QuoteId(quoteId));
+        var pendingQuote = quoteCommandService.handle(pendingQuoteCommand);
+
+        if(pendingQuote == null){ return ResponseEntity.badRequest().build();}
+        String message = "Quote state changed to Pending successfully";
         return ResponseEntity.ok(message);
     }
 }

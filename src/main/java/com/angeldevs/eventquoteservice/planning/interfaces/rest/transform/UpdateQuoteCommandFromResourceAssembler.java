@@ -7,6 +7,6 @@ import com.angeldevs.eventquoteservice.planning.interfaces.rest.resources.Update
 
 public class UpdateQuoteCommandFromResourceAssembler {
     public static UpdateQuoteCommand toCommandFromResource(String quoteId, UpdateQuoteResource resource) {
-        return new UpdateQuoteCommand(new QuoteId(quoteId), resource.title(), EventType.valueOf(resource.eventType()),resource.guestQuantity(), resource.location(),resource.totalPrice(),resource.eventDate());
+        return new UpdateQuoteCommand(new QuoteId(quoteId), resource.title(), resource.customerName(),EventType.valueOf(resource.eventType()),resource.guestQuantity(), resource.location(),resource.totalPrice(),resource.eventDate());
     }
 }

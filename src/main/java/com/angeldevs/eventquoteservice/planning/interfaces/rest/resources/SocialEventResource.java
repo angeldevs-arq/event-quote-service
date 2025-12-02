@@ -1,6 +1,7 @@
 package com.angeldevs.eventquoteservice.planning.interfaces.rest.resources;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Resource representing a social event response.
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 
 public record SocialEventResource(Long id,
                                   String title,
-                                  LocalDate date,
+                                  Date date,
                                   String customerName,
                                   String place,
                                   String status

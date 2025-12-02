@@ -1,6 +1,7 @@
 package com.angeldevs.eventquoteservice.planning.domain.model.commands;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Command to update an existing social event.
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 
 public record UpdateSocialEventCommand( Long socialEventId,
                                         String title,
-                                        LocalDate date,
+                                        Date date,
                                         String customerName,
                                         String place,
                                         String status ) {

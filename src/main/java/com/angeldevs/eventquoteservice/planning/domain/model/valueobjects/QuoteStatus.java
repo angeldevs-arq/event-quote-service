@@ -13,5 +13,6 @@ package com.angeldevs.eventquoteservice.planning.domain.model.valueobjects;
 public enum QuoteStatus {
     PENDING,
     ACCEPTED,
-    REJECTED
+    REJECTED,
+    DRAFT
 }

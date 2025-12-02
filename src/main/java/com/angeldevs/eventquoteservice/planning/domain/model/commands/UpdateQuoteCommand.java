@@ -5,7 +5,7 @@ import com.angeldevs.eventquoteservice.planning.domain.model.valueobjects.QuoteI
 
 import java.util.Date;
 
-public record UpdateQuoteCommand(QuoteId quoteId, String title, EventType eventType, int guestQuantity, String location, double totalPrice, Date eventDate) {
+public record UpdateQuoteCommand(QuoteId quoteId, String title,String customerName, EventType eventType, int guestQuantity, String location, double totalPrice, Date eventDate) {
     public UpdateQuoteCommand{
         if(quoteId==null || quoteId.quoteId().isBlank()){
             throw new IllegalArgumentException("Quote id cannot be null");

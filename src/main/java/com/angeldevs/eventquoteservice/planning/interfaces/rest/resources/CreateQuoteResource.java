@@ -2,10 +2,13 @@ package com.angeldevs.eventquoteservice.planning.interfaces.rest.resources;
 
 import java.util.Date;
 
-public record CreateQuoteResource(String title, String eventType, int guestQuantity, String location, double totalPrice, String state, Date eventDate, Long organizerId, Long hostId) {
+public record CreateQuoteResource(String title, String customerName, String eventType, int guestQuantity, String location, double totalPrice, String state, Date eventDate, Long organizerId, Long hostId) {
     public CreateQuoteResource {
         if(title == null || title.isBlank()){
             throw new IllegalArgumentException("Title cannot be null or blank");
+        }
+        if(customerName == null || customerName.isBlank()){
+            throw new IllegalArgumentException("Customer Name cannot be null or blank");
         }
         if(eventType == null){
             throw new IllegalArgumentException("EventType cannot be null");

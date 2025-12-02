@@ -25,6 +25,10 @@ public class Quote extends AbstractAggregateRoot<Quote> {
 
     @Getter
     String title;
+
+    @Getter
+    String customerName;
+
     @Getter
     @Enumerated(EnumType.STRING)
     EventType eventType;
@@ -67,6 +71,7 @@ public class Quote extends AbstractAggregateRoot<Quote> {
     public Quote(CreateQuoteCommand command){
         this();
         this.title = command.title();
+        this.customerName = command.customerName();
         this.eventType = command.eventType();
         this.guestQuantity = command.guestQuantity();
         this.location = command.location();
@@ -77,9 +82,12 @@ public class Quote extends AbstractAggregateRoot<Quote> {
         this.hostId = command.hostId();
     }
 
-    public Quote updateInformation(String title, EventType eventType, int guestQuantity, String location, double totalPrice, Date eventDate){
+    public Quote updateInformation(String title, String customerName, EventType eventType, int guestQuantity, String location, double totalPrice, Date eventDate){
         if(title !=null && !title.isBlank()){
             this.title = title;
+        }
+        if(customerName !=null && !customerName.isBlank()){
+            this.customerName = customerName;
         }
         if(eventType != null ){
             this.eventType = eventType;
@@ -115,5 +123,5 @@ public class Quote extends AbstractAggregateRoot<Quote> {
         this.state = QuoteStatus.REJECTED;
     }
 
-
+    public void pending(){ this.state = QuoteStatus.PENDING; }
 }
